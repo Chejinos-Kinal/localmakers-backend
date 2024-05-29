@@ -1,0 +1,19 @@
+{
+  "name": "localmakers-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnderCabrera/localmakers-backend.git"
+  },
+  "author": "Ander Cabrera and Sergio Tepaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnderCabrera/localmakers-backend/issues"
+  },
+  "homepage": "https://github.com/AnderCabrera/localmakers-backend#readme",
+  "description": ""
+}
