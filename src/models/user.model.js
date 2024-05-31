@@ -52,7 +52,7 @@ const userSchema = Schema({
   role: {
     type: String,
     uppercase: true,
-    enum: ['CLIENT', 'ADMIN'],
+    enum: ['CLIENT', 'ADMIN', 'PROFESSIONAL'],
     default: 'CLIENT',
     required: true,
   },
