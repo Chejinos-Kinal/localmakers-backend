@@ -5,7 +5,7 @@ import { Schema, model } from 'mongoose';
 const userSchema = Schema({
   profilePicture: {
     type: String,
-    required: true
+    required: true,
   },
   name: {
     type: String,

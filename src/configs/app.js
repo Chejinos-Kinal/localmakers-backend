@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import express from 'express';
 import { config } from 'dotenv';
+import professionRoutes from '../routes/profession.routes.js';
 
 const app = express();
 config();
@@ -15,7 +16,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 //Rutas hacia los controladores
-
+app.use('/profession', professionRoutes);
 
 export const initServer = () => {
   app.listen(port);

@@ -13,8 +13,8 @@ const professionSchema = Schema({
   },
   image: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 export default model('Profession', professionSchema);
