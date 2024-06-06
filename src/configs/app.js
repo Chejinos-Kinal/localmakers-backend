@@ -4,6 +4,8 @@ import morgan from 'morgan';
 import express from 'express';
 import { config } from 'dotenv';
 import professionRoutes from '../routes/profession.routes.js';
+import finalOfferRouter from '../routes/finaloffer.routes.js';
+import reviewRouter from '../routes/review.routes.js';
 
 const app = express();
 config();
@@ -17,6 +19,8 @@ app.use(morgan('dev'));
 
 //Rutas hacia los controladores
 app.use('/profession', professionRoutes);
+app.use('/finaloffer', finalOfferRouter);
+app.use('/review', reviewRouter);
 
 export const initServer = () => {
   app.listen(port);
