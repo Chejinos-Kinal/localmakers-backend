@@ -9,7 +9,8 @@ const reviewSchema = Schema({
   },
   date: {
     type: Date,
-    required: true,
+    required: false,
+    default: Date.now(),
   },
   rating: {
     type: Number,
@@ -20,7 +21,7 @@ const reviewSchema = Schema({
     ref: 'User',
     required: true,
   },
-  professional: {
+  userProfessional: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
