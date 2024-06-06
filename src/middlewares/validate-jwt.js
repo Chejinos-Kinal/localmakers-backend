@@ -32,12 +32,11 @@ export const isAdmin = async (req, res, next) => {
   }
 };
 
-export const isProf = async(req, res, next) => {
-    try{
-        let { role, name, username } = req.user
-        
-    }catch(err){
-        console.error(err)
-        return res.status(401).send({message: 'No esta autorizado'})
-    }
-}
+export const isProf = async (req, res, next) => {
+  try {
+    let { role, name, username } = req.user;
+  } catch (err) {
+    console.error(err);
+    return res.status(401).send({ message: 'No esta autorizado' });
+  }
+};

@@ -16,6 +16,10 @@ const accountSchema = Schema({
     type: Number,
     required: true,
   },
+  estado: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 export default model('Account', accountSchema);
