@@ -56,6 +56,13 @@ const userSchema = Schema({
     default: 'CLIENT',
     required: true,
   },
+  tp_status: {
+    type: String,
+    uppercase: true,
+    enum: ['ACTIVE', 'DELETED'],
+    required: false,
+    default: 'ACTIVE',
+  },
 });
 
 export default model('User', userSchema);
