@@ -4,9 +4,10 @@ import morgan from 'morgan';
 import express from 'express';
 import { config } from 'dotenv';
 import professionRoutes from '../routes/profession.routes.js';
-import accountRoutes from '../routes/account.route.js';
+import accountRoutes from '../routes/account.routes.js';
 import finalOfferRouter from '../routes/finaloffer.routes.js';
 import reviewRouter from '../routes/review.routes.js';
+import userRoutes from '../routes/user.routes.js'
 
 const app = express();
 config();
@@ -23,6 +24,7 @@ app.use('/profession', professionRoutes);
 app.use('/account', accountRoutes);
 app.use('/finaloffer', finalOfferRouter);
 app.use('/review', reviewRouter);
+app.use('/user', userRoutes)
 
 export const initServer = () => {
   app.listen(port);
