@@ -73,6 +73,7 @@ export const userDefault = async (
   locality,
   profession,
   rol,
+  description,
 ) => {
   try {
     let tam = profession;
@@ -93,6 +94,7 @@ export const userDefault = async (
           profession: prof._id,
           role: rol,
           tp_status: 'ACTIVE',
+          description: description,
         };
       } else {
         data = {
@@ -106,6 +108,7 @@ export const userDefault = async (
           locality: locality,
           role: rol,
           tp_status: 'ACTIVE',
+          description: description,
         };
       }
       let user = new User(data);
@@ -256,7 +259,7 @@ export const getProf = async (req, res) => {
     let foundedProf = await User.find({
       role: 'PROFESSIONAL',
       tp_status: 'ACTIVE',
-    });
+    }).populate('profession');
     if (!foundedProf)
       return res
         .status(404)

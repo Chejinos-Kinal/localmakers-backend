@@ -24,6 +24,6 @@ api.post('/login', login);
 api.put('/updateUser/:id', [validateJwt], update);
 api.get('/getUsers', getUsers);
 api.delete('/deleteUser/:id', [validateJwt], deleteUser);
-api.get('/getProf', [validateJwt], getProf);
+api.get('/getProf', getProf);
 
 export default api;

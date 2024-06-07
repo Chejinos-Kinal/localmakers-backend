@@ -39,6 +39,7 @@ const defaultCosas = async () => {
     'Fundación Kinal',
     '',
     'CLIENT',
+    'Hola',
   );
 
   await userDefault(
@@ -52,6 +53,7 @@ const defaultCosas = async () => {
     'Mega',
     '',
     'CLIENT',
+    'Hola',
   );
 
   await userDefault(
@@ -65,6 +67,7 @@ const defaultCosas = async () => {
     'Su casa',
     'Pintor',
     'PROFESSIONAL',
+    'Hola',
   );
 
   await userDefault(
@@ -78,6 +81,7 @@ const defaultCosas = async () => {
     'Su casa',
     'Plomero',
     'PROFESSIONAL',
+    'Hola',
   );
 };
 

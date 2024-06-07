@@ -51,6 +51,10 @@ const userSchema = Schema({
     default: 'CLIENT',
     required: true,
   },
+  description: {
+    type: String,
+    required: false,
+  },
   tp_status: {
     type: String,
     uppercase: true,
