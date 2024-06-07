@@ -110,6 +110,8 @@ export const userDefault = async (
       }
       let user = new User(data);
       await user.save();
+      let idUser = await User.findOne({ username: data.username });
+      await autoAccount(idUser.idUser);
       return console.log('Usuario registrado con exito');
     } else {
       console.log('Este usuario default ya ha sido creado anteriormente');
