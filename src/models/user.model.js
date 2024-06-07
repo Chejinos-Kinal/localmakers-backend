@@ -44,11 +44,6 @@ const userSchema = Schema({
       required: false,
     },
   ],
-  account: {
-    type: Schema.Types.ObjectId,
-    ref: 'Account',
-    required: true,
-  },
   role: {
     type: String,
     uppercase: true,

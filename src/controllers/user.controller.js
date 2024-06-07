@@ -4,6 +4,7 @@ import User from '../models/user.model.js';
 import { autoAccount } from './account.controller.js';
 import { encrypt, checkPassword } from '../helpers/validator.js';
 import { generateJwt } from '../helpers/jwt.js';
+import { getIdProf } from './profession.controller.js';
 
 //TODO: agregar la creación de la cuenta y ligarla al usuario
 
@@ -62,6 +63,7 @@ export const newProfessional = async (req, res) => {
 };
 
 export const userDefault = async (
+  profilePicture,
   name,
   surname,
   email,
@@ -70,26 +72,51 @@ export const userDefault = async (
   phone,
   locality,
   profession,
+  rol,
 ) => {
   try {
-    let data = {
-      name: name,
-      surname: surname,
-      email: email,
-      username: username,
-      password: await encrypt(password),
-      phone: phone,
-      locality: locality,
-      profession: profession,
-    };
-    let user = new User(data);
-    await user.save();
-    return res.status(200).send({ message: 'Usuario registrado con exito' });
+    let tam = profession;
+    let data;
+    let foundUser = await User.findOne({ email: email, username: username });
+    if (!foundUser) {
+      if (tam.length > 0) {
+        let prof = await getIdProf(profession);
+        data = {
+          profilePicture: profilePicture,
+          name: name,
+          surname: surname,
+          email: email,
+          username: username,
+          password: await encrypt(password),
+          phone: phone,
+          locality: locality,
+          profession: prof._id,
+          role: rol,
+          tp_status: 'ACTIVE',
+        };
+      } else {
+        data = {
+          profilePicture: profilePicture,
+          name: name,
+          surname: surname,
+          email: email,
+          username: username,
+          password: await encrypt(password),
+          phone: phone,
+          locality: locality,
+          role: rol,
+          tp_status: 'ACTIVE',
+        };
+      }
+      let user = new User(data);
+      await user.save();
+      return console.log('Usuario registrado con exito');
+    } else {
+      console.log('Este usuario default ya ha sido creado anteriormente');
+    }
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .send({ message: 'Error al agregar el usuario default' });
+    console.log('Error al agregar el usuario default');
   }
 };
 
@@ -149,9 +176,9 @@ export const update = async (req, res) => {
   try {
     let { id } = req.params;
     let data = req.body;
-    if(data.role){
-      return res.status(401).send({message: 'No puede actualizar su rol'})
-    }else{
+    if (data.role) {
+      return res.status(401).send({ message: 'No puede actualizar su rol' });
+    } else {
       if (data.password && data.passwordConfirm) {
         if (data.password !== data.passwordConfirm) {
           return res.status(400).send({

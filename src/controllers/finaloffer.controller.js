@@ -1,6 +1,6 @@
 'use strict';
 
-import finalofferModel from '../models/finaloffer.model';
+import finalofferModel from '../models/finaloffer.model.js';
 
 export const newFinalOffer = async (req, res) => {
   try {
