@@ -73,6 +73,7 @@ export const userDefault = async (
   locality,
   profession,
   rol,
+  description,
 ) => {
   try {
     let tam = profession;
@@ -93,6 +94,7 @@ export const userDefault = async (
           profession: prof._id,
           role: rol,
           tp_status: 'ACTIVE',
+          description: description,
         };
       } else {
         data = {
@@ -106,10 +108,13 @@ export const userDefault = async (
           locality: locality,
           role: rol,
           tp_status: 'ACTIVE',
+          description: description,
         };
       }
       let user = new User(data);
       await user.save();
+      let idUser = await User.findOne({ username: data.username });
+      await autoAccount(idUser.idUser);
       return console.log('Usuario registrado con exito');
     } else {
       console.log('Este usuario default ya ha sido creado anteriormente');
@@ -254,7 +259,7 @@ export const getProf = async (req, res) => {
     let foundedProf = await User.find({
       role: 'PROFESSIONAL',
       tp_status: 'ACTIVE',
-    });
+    }).populate('profession');
     if (!foundedProf)
       return res
         .status(404)
