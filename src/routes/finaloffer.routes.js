@@ -5,7 +5,7 @@ import {
   deleteOffer,
   getFinalOffer,
   newFinalOffer,
-} from '../controllers/finaloffer.controller';
+} from '../controllers/finaloffer.controller.js';
 
 const api = Router();
 
