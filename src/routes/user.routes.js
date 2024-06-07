@@ -10,6 +10,7 @@ import {
   update,
   getUsers,
   deleteUser,
+  getProf,
 } from '../controllers/user.controller.js';
 import { validateJwt, isAdmin, isProf } from '../middlewares/validate-jwt.js';
 
@@ -23,5 +24,6 @@ api.post('/login', login);
 api.put('/updateUser/:id', [validateJwt], update);
 api.get('/getUsers', getUsers);
 api.delete('/deleteUser/:id', [validateJwt], deleteUser);
+api.get('/getProf', [validateJwt], getProf);
 
 export default api;

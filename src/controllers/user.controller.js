@@ -248,3 +248,22 @@ export const deleteUser = async (req, res) => {
       .send({ message: 'Error al eliminar la cuenta del usuario' });
   }
 };
+
+export const getProf = async (req, res) => {
+  try {
+    let foundedProf = await User.find({
+      role: 'PROFESSIONAL',
+      tp_status: 'ACTIVE',
+    });
+    if (!foundedProf)
+      return res
+        .status(404)
+        .send({ message: 'No se han encontrado profesionales' });
+    return res.status(200).send({ foundedProf });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .send({ message: 'Error al obtener los profesionales' });
+  }
+};
