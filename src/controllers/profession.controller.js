@@ -52,3 +52,17 @@ export const getProfessions = async (req, res) => {
       .send({ message: 'Error al obtener todas las profesiones' });
   }
 };
+
+export const getIdProf = async (name) => {
+  try {
+    let foundedProffession = await Profession.findOne({ name: name });
+    if (!foundedProffession)
+      return console.log(
+        'No se ha encontrado la profesión, no se ha podido obtener el id',
+      );
+    return foundedProffession;
+  } catch (err) {
+    console.error(err);
+    return console.log('Error al obtener el id de la profesión');
+  }
+};

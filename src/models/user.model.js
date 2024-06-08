@@ -44,17 +44,23 @@ const userSchema = Schema({
       required: false,
     },
   ],
-  account: {
-    type: Schema.Types.ObjectId,
-    ref: 'Account',
-    required: true,
-  },
   role: {
     type: String,
     uppercase: true,
     enum: ['CLIENT', 'ADMIN', 'PROFESSIONAL'],
     default: 'CLIENT',
     required: true,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  tp_status: {
+    type: String,
+    uppercase: true,
+    enum: ['ACTIVE', 'DELETED'],
+    required: false,
+    default: 'ACTIVE',
   },
 });
 
