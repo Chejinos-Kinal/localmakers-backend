@@ -37,6 +37,7 @@ export const isProf = async (req, res, next) => {
     let { role, name, username } = req.user;
     if (!role || role !== 'PROFESSIONAL')
       res.status(401).send({ message: `No tienes acceso ${username}` });
+    next();
   } catch (err) {
     console.error(err);
     return res.status(401).send({ message: 'No esta autorizado' });
