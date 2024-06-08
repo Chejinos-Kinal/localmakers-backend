@@ -25,7 +25,7 @@ api.get('/getWorkOffer', [validateJwt, isAdmin], getWorkOffer);
 api.get('/getWorkOffersByUser', [validateJwt, isAdmin], getWorkOffersByUser);
 
 //User
-api.get('/getWorkOfferByTitle'[validateJwt], getWorkOffersByTitle);
+api.get('/getWorkOfferByTitle', [validateJwt], getWorkOffersByTitle);
 api.get('/getWorkOffersByLoggedUser', [validateJwt], getWorkOffersByLoggedUser);
 
 export default api;
