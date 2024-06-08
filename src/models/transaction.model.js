@@ -25,11 +25,6 @@ const transactionSchema = Schema({
     ref: 'User',
     required: true,
   },
-  account: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
   professional: {
     type: Schema.Types.ObjectId,
     ref: 'User',
