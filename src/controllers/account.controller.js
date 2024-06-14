@@ -15,10 +15,10 @@ export const autoAccount = async (userId) => {
     let account = new Account(data);
     await account.save();
     console.log('Se creó la cuenta del usuario');
-    return; // No necesitas retornar console.log()
+    // No necesitas retornar console.log()
   } catch (err) {
     console.error(err);
-    throw new Error('Error al agregar la cuenta del usuario'); // Mejor lanzar el error
+    console.log('Error al agregar la cuenta del usuario'); // Mejor lanzar el error
   }
 };
 
@@ -75,10 +75,10 @@ export const AssignDebt = async (id, debt) => {
     let asignDebt = await Account.findOneAndUpdate({ _id: id }, data, {
       new: true,
     });
-    return res.send({ message: 'Deuda agregada con exito', asignDebt });
+    return console.log('Deuda agregada con exito', asignDebt);
   } catch (err) {
     console.error(err);
-    return res.status(500).send({ message: 'Error al asignar la Deuda' });
+    return console.log('Error al asignar la Deuda');
   }
 };
 
