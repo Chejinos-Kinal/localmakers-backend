@@ -35,9 +35,7 @@ export const professionDefault = async (name, description, image) => {
     }
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .send({ message: 'Error al ingresar la profesión por default' });
+    return console.log('Error al ingresar la profesión por default');
   }
 };
 
