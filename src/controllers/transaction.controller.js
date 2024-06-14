@@ -15,12 +15,10 @@ export const newTransaction = async (req, res) => {
       { new: true },
     );
     if (!foundedFinalOff)
-      return res
-        .status(500)
-        .send({
-          message:
-            'No se pudo localizar la oferta, no se pudo concretar la transacción',
-        });
+      return res.status(500).send({
+        message:
+          'No se pudo localizar la oferta, no se pudo concretar la transacción',
+      });
     let data = {
       finalOffer: finalOffer,
       workDate: foundedFinalOff.workDate,
