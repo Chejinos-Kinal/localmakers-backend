@@ -5,9 +5,10 @@ import WorkOffer from '../models/workoffer.model.js';
 export const createWorkOffer = async (req, res) => {
   try {
     let data = req.body;
+    let { idProf } = req.params;
     let userIdL = req.user._id;
     data.user = userIdL;
-    data.professional = userIdL;
+    data.professional = idProf;
     let workoffer = new WorkOffer(data);
     await workoffer.save();
     return res.send({ message: 'Work offer created succesfully' });
@@ -20,7 +21,7 @@ export const createWorkOffer = async (req, res) => {
 export const updateWorkOffer = async (req, res) => {
   try {
     let data = req.body;
-    let workOfferId = req.params.id;
+    let { workOfferId } = req.params;
     if (data.user || data.professional || data.status)
       return res.status(401).send({ message: 'Some data cannot be updated' });
     let updateWorkOffer = await WorkOffer.findOneAndUpdate(
@@ -42,7 +43,7 @@ export const updateWorkOffer = async (req, res) => {
 
 export const deleteWorkOffer = async (req, res) => {
   try {
-    let workOfferId = req.params._id;
+    let { workOfferId } = req.params;
     let deletedWorkOffer = await WorkOffer.findOneAndDelete({
       _id: workOfferId,
     });

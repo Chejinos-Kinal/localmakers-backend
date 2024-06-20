@@ -64,3 +64,20 @@ export const getIdProf = async (name) => {
     return console.log('Error al obtener el id de la profesión');
   }
 };
+
+export const getProfById = async (req, res) => {
+  try {
+    let { idProf } = req.params;
+    let foundedProf = await Profession.findOne({ _id: idProf });
+    if (!foundedProf)
+      return res
+        .status(404)
+        .send({ message: 'No se encontro ninguna profesion' });
+    return res.status(200).send({ foundedProf });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .send({ message: 'Error al obtener la profesion por el id' });
+  }
+};
