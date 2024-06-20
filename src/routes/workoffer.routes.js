@@ -15,9 +15,9 @@ import { validateJwt, isAdmin } from '../middlewares/validate-jwt.js';
 const api = Router();
 
 //Ambos roles
-api.post('/createWorkOffer', [validateJwt], createWorkOffer);
-api.put('/udpateWorkOffer', [validateJwt], updateWorkOffer);
-api.delete('/delteWorkOffer', [validateJwt], deleteWorkOffer);
+api.post('/createWorkOffer/:idProf', [validateJwt], createWorkOffer);
+api.put('/udpateWorkOffer/:workOfferId', [validateJwt], updateWorkOffer);
+api.delete('/deleteWorkOffer/:workOfferId', [validateJwt], deleteWorkOffer);
 api.get('/getWorkOffers', [validateJwt], getWorkOffers);
 
 //Admin

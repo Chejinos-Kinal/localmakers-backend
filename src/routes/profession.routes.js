@@ -1,9 +1,16 @@
 'use strict';
 import { Router } from 'express';
-import { getProfessions } from '../controllers/profession.controller.js';
+import { validateJwt } from '../middlewares/validate-jwt.js';
+import {
+  getProfessions,
+  newProffession,
+  getProfById,
+} from '../controllers/profession.controller.js';
 
 const api = Router();
 
-api.get('/getProfession', getProfessions);
+api.get('/getProfession', validateJwt, getProfessions);
+api.post('/newProfession', validateJwt, newProffession);
+api.get('/getProfId/:idProf', validateJwt, getProfById);
 
 export default api;
