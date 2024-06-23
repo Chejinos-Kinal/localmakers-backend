@@ -127,7 +127,7 @@ export const userDefault = async (
 
 export const dataUser = async (req, res) => {
   try {
-    let { id } = req.params;
+    let { id } = req.user._id;
     let foundedData = await User.findOne({ _id: id });
     if (!foundedData) {
       return res.status(404).send({ message: 'Usuario no encontrado' });
