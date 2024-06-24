@@ -84,8 +84,9 @@ export const AssignDebt = async (id, debt) => {
 
 export const viewAll = async (req, res) => {
   try {
-    let accounts = await Account.find();
-    return res.send({ accounts });
+    let userIdL = req.user._id;
+    let accounts = await Account.find({ user: userIdL });
+    return res.send(accounts);
   } catch (error) {
     console.error(error);
     return res.status(500).send({ message: 'No se listar todas las cuentas' });

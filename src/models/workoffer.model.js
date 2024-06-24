@@ -27,7 +27,7 @@ const workOfferSchema = Schema({
   },
   status: {
     type: Boolean,
-    default: true
+    default: true,
   },
 });
 
