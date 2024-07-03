@@ -19,7 +19,7 @@ const api = Router();
 api.post('/newAdmin', [validateJwt, isAdmin], newAdmin);
 api.post('/newUser', newUser);
 api.post('/newProf', newProfessional);
-api.get('/getUserData/:id', [validateJwt], dataUser);
+api.get('/getUserData', [validateJwt], dataUser);
 api.post('/login', login);
 api.put('/updateUser/:id', [validateJwt], update);
 api.get('/getUsers', getUsers);
