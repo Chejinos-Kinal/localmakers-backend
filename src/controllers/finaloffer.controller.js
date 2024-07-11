@@ -58,9 +58,12 @@ export const newFinalOffer = async (req, res) => {
 export const getFinalOffer = async (req, res) => {
   try {
     let userIdL = req.user._id;
-    let foundFinalOffer = await finalofferModel.find({
-      user: userIdL,
-    });
+    let foundFinalOffer = await finalofferModel
+      .find({
+        user: userIdL,
+      })
+      .populate('professional')
+      .populate('workOffer');
     return res.status(200).send({ foundFinalOffer });
   } catch (err) {
     console.error(err);

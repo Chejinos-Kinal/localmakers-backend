@@ -62,12 +62,10 @@ export const newUser = async (req, res) => {
           .send({ message: 'Error al enviar el correo de confirmación' });
       } else {
         console.log('Correo de confirmación enviado: ' + info.response);
-        return res
-          .status(200)
-          .send({
-            message:
-              'Usuario registrado con éxito. Por favor verifica tu correo electrónico.',
-          });
+        return res.status(200).send({
+          message:
+            'Usuario registrado con éxito. Por favor verifica tu correo electrónico.',
+        });
       }
     });
   } catch (err) {
