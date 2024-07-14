@@ -8,16 +8,10 @@ const transactionSchema = Schema({
     ref: 'FinalOffer',
     required: true,
   },
-  workDate: {
-    type: Date,
-    required: true,
-  },
-  workSite: {
+  paymentMethod: {
     type: String,
-    required: true,
-  },
-  total: {
-    type: Number,
+    upperCase: true,
+    enum: ['VISA', 'MASTERCARD', 'AMERICAN EXPRESS', 'EFECTIVO'],
     required: true,
   },
   user: {
@@ -30,15 +24,14 @@ const transactionSchema = Schema({
     ref: 'User',
     required: true,
   },
-  paymentMethod: {
-    type: String,
-    upperCase: true,
-    enum: ['VISA', 'MASTERCARD', 'AMERICAN EXPRESS', 'CASH'],
+  statusProfesional: {
+    type: Boolean,
+    default: false,
     required: true,
   },
-  status: {
+  statusCliente: {
     type: Boolean,
-    default: true,
+    default: false,
     required: true,
   },
 });

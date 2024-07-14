@@ -61,6 +61,7 @@ export const getFinalOffer = async (req, res) => {
     let foundFinalOffer = await finalofferModel
       .find({
         user: userIdL,
+        status: true,
       })
       .populate('professional')
       .populate('workOffer');

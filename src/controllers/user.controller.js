@@ -159,8 +159,9 @@ export const userDefault = async (
 
 export const dataUser = async (req, res) => {
   try {
-    let { id } = req.user._id;
+    let id = req.user._id;
     let foundedData = await User.findOne({ _id: id });
+
     if (!foundedData) {
       return res.status(404).send({ message: 'Usuario no encontrado' });
     }
@@ -238,6 +239,7 @@ export const update = async (req, res) => {
           .status(404)
           .send({ message: 'Usuario no encontrado, no se ha actualizado' });
       }
+      console.log(updatedUser);
       return res
         .status(200)
         .send({ message: 'Usuario actualizado', updatedUser });
