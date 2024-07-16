@@ -43,6 +43,8 @@ export const newUser = async (req, res) => {
     data.password = await encrypt(data.password);
     let user = new User(data);
     await user.save();
+    let idUser = await User.findOne({ username: data.username });
+    await autoAccount(idUser._id);
     const verificationLink = `http://localhost:8081/HomePage`;
     const mailOptions = {
       from: 'localmakergrupo3@gmail.com',
@@ -84,7 +86,7 @@ export const newProfessional = async (req, res) => {
     let user = new User(data);
     await user.save();
     let idUser = await User.findOne({ username: data.username });
-    await autoAccount(idUser.idUser);
+    await autoAccount(idUser._id);
     return res
       .status(200)
       .send({ message: 'Profesional agregado exitosamente' });
@@ -110,7 +112,10 @@ export const userDefault = async (
   try {
     let tam = profession;
     let data;
-    let foundUser = await User.findOne({ email: email, username: username });
+    let foundUser = await User.findOne({
+      $or: [{ username: username }, { email: username }],
+      tp_status: 'ACTIVE',
+    });
     if (!foundUser) {
       if (tam.length > 0) {
         let prof = await getIdProf(profession);
@@ -146,7 +151,7 @@ export const userDefault = async (
       let user = new User(data);
       await user.save();
       let idUser = await User.findOne({ username: data.username });
-      await autoAccount(idUser.idUser);
+      await autoAccount(idUser._id);
       return console.log('Usuario registrado con exito');
     } else {
       console.log('Este usuario default ya ha sido creado anteriormente');
