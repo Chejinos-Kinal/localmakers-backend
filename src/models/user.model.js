@@ -5,7 +5,6 @@ import { Schema, model } from 'mongoose';
 const userSchema = Schema({
   profilePicture: {
     type: String,
-    required: true,
   },
   name: {
     type: String,
@@ -62,6 +61,7 @@ const userSchema = Schema({
     required: false,
     default: 'ACTIVE',
   },
+  /*  emailVerified: { type: Boolean, default: false }, */
 });
 
 export default model('User', userSchema);

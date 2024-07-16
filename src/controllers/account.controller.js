@@ -4,10 +4,8 @@ import User from '../models/user.model.js';
 
 export const autoAccount = async (userId) => {
   try {
-    let foundedIdUser = await User.findOne({ id: userId });
-    let idUser = foundedIdUser._id;
     let data = {
-      user: idUser,
+      user: userId,
       deuda: 0.0,
       credito: 0.0,
       estado: true,

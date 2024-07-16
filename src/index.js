@@ -83,6 +83,20 @@ const defaultCosas = async () => {
     'PROFESSIONAL',
     'Hola',
   );
+
+  await userDefault(
+    'https://png.pngtree.com/png-clipart/20190516/original/pngtree-users-vector-icon-png-image_3725294.jpg',
+    'Mc',
+    'Lovin',
+    'mcloving@gmail.com',
+    'mclovin',
+    '12345678',
+    '12345678',
+    'Su casa',
+    'Plomero',
+    'PROFESSIONAL',
+    'Hola',
+  );
 };
 
 defaultCosas();

@@ -1,5 +1,5 @@
 'use strict';
-
+import nodemailer from 'nodemailer';
 import User from '../models/user.model.js';
 import { autoAccount } from './account.controller.js';
 import { encrypt, checkPassword } from '../helpers/validator.js';
@@ -26,6 +26,16 @@ export const newAdmin = async (req, res) => {
   }
 };
 
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'localmakergrupo3@gmail.com',
+    pass: 'wuhq sfjh xvmm kggh',
+  },
+});
+
 export const newUser = async (req, res) => {
   try {
     let data = req.body;
@@ -34,8 +44,32 @@ export const newUser = async (req, res) => {
     let user = new User(data);
     await user.save();
     let idUser = await User.findOne({ username: data.username });
-    await autoAccount(idUser.idUser);
-    return res.status(200).send({ message: 'Usuario registrado con exito' });
+    await autoAccount(idUser._id);
+    const verificationLink = `http://localhost:8081/HomePage`;
+    const mailOptions = {
+      from: 'localmakergrupo3@gmail.com',
+      to: user.email,
+      subject: 'Confirmación de Registro',
+      html: `
+          <p>¡Bienvenido a nuestra aplicación!</p>
+          <p>Por favor haz clic en este <a href="${verificationLink}">enlace</a> para verificar tu correo electrónico.</p>
+        `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res
+          .status(500)
+          .send({ message: 'Error al enviar el correo de confirmación' });
+      } else {
+        console.log('Correo de confirmación enviado: ' + info.response);
+        return res.status(200).send({
+          message:
+            'Usuario registrado con éxito. Por favor verifica tu correo electrónico.',
+        });
+      }
+    });
   } catch (err) {
     console.error(err);
     return res
@@ -52,7 +86,7 @@ export const newProfessional = async (req, res) => {
     let user = new User(data);
     await user.save();
     let idUser = await User.findOne({ username: data.username });
-    await autoAccount(idUser.idUser);
+    await autoAccount(idUser._id);
     return res
       .status(200)
       .send({ message: 'Profesional agregado exitosamente' });
@@ -78,7 +112,10 @@ export const userDefault = async (
   try {
     let tam = profession;
     let data;
-    let foundUser = await User.findOne({ email: email, username: username });
+    let foundUser = await User.findOne({
+      $or: [{ username: username }, { email: username }],
+      tp_status: 'ACTIVE',
+    });
     if (!foundUser) {
       if (tam.length > 0) {
         let prof = await getIdProf(profession);
@@ -114,7 +151,7 @@ export const userDefault = async (
       let user = new User(data);
       await user.save();
       let idUser = await User.findOne({ username: data.username });
-      await autoAccount(idUser.idUser);
+      await autoAccount(idUser._id);
       return console.log('Usuario registrado con exito');
     } else {
       console.log('Este usuario default ya ha sido creado anteriormente');
@@ -127,8 +164,9 @@ export const userDefault = async (
 
 export const dataUser = async (req, res) => {
   try {
-    let { id } = req.user._id;
+    let id = req.user._id;
     let foundedData = await User.findOne({ _id: id });
+
     if (!foundedData) {
       return res.status(404).send({ message: 'Usuario no encontrado' });
     }
@@ -145,17 +183,18 @@ export const login = async (req, res) => {
   try {
     let { username, password } = req.body;
     let user = await User.findOne({
-      $or: [
-        {
-          username,
-          username,
-        },
-        {
-          email: username,
-        },
-      ],
+      $or: [{ username: username }, { email: username }],
       tp_status: 'ACTIVE',
     });
+
+    if (!user) {
+      return res.status(404).send({ message: 'Credenciales inválidas' });
+    }
+
+    /*   if (!user.emailVerified) {
+      return res.status(401).send({ message: 'Por favor verifica tu correo electrónico para poder iniciar sesión.' });
+    }
+ */
     if (user && (await checkPassword(password, user.password))) {
       let loggedUser = {
         uid: user._id,
@@ -170,10 +209,11 @@ export const login = async (req, res) => {
         token,
       });
     }
-    return res.status(404).send({ message: 'Credenciales invalidas' });
+
+    return res.status(404).send({ message: 'Credenciales inválidas' });
   } catch (err) {
     console.error(err);
-    return res.status(500).send({ message: 'Error al logear' });
+    return res.status(500).send({ message: 'Error al iniciar sesión' });
   }
 };
 
@@ -204,6 +244,7 @@ export const update = async (req, res) => {
           .status(404)
           .send({ message: 'Usuario no encontrado, no se ha actualizado' });
       }
+      console.log(updatedUser);
       return res
         .status(200)
         .send({ message: 'Usuario actualizado', updatedUser });

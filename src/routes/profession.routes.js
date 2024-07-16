@@ -9,8 +9,8 @@ import {
 
 const api = Router();
 
-api.get('/getProfession', validateJwt, getProfessions);
-api.post('/newProfession', validateJwt, newProffession);
+api.get('/getProfession', getProfessions);
+api.post('/newProfession', newProffession);
 api.get('/getProfId/:idProf', validateJwt, getProfById);
 
 export default api;

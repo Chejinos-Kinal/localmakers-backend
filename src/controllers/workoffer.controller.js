@@ -1,16 +1,48 @@
 'use strict';
 
+import nodemailer from 'nodemailer';
 import WorkOffer from '../models/workoffer.model.js';
+import userModel from '../models/user.model.js';
 
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'localmakergrupo3@gmail.com',
+    pass: 'wuhq sfjh xvmm kggh',
+  },
+});
 export const createWorkOffer = async (req, res) => {
   try {
     let data = req.body;
     let { idProf } = req.params;
     let userIdL = req.user._id;
     data.user = userIdL;
+    const userEcontrado = await userModel.findOne({ _id: idProf });
     data.professional = idProf;
     let workoffer = new WorkOffer(data);
     await workoffer.save();
+    const mailOptions = {
+      from: 'localmakergrupo3@gmail.com',
+      to: userEcontrado.email,
+      subject: 'Nueva Oferta De trabajo',
+      text: `Se ha agregado una nueva oferta de trabajo:
+      Titulo: ${data.title}
+      Descripcion del problema: ${data.problemDescription}
+      Sitio de Trabajo: ${data.workSite}`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send({ message: 'Error al enviar el correo' });
+      } else {
+        console.log('Correo enviado: ' + info.response);
+        return res
+          .status(200)
+          .send({ message: 'Se agregó la oferta final y se envió el correo' });
+      }
+    });
     return res.send({ message: 'Work offer created succesfully' });
   } catch (error) {
     console.error(error);
@@ -98,8 +130,10 @@ export const getWorkOffersByTitle = async (req, res) => {
 export const getWorkOffersByLoggedUser = async (req, res) => {
   try {
     let userIdL = req.user._id;
-    let workoffers = await WorkOffer.find({ user: userIdL });
-    return res.send({ message: 'Work offers finded', workoffers });
+    let workoffers = await WorkOffer.find({ professional: userIdL }).populate(
+      'user',
+    );
+    return res.send({ message: 'Work offers found', workoffers });
   } catch (error) {
     console.error(error);
     return res.status(500).send({ message: 'Error getting work offers' });
