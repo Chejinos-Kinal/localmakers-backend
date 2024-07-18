@@ -3,6 +3,7 @@
 import nodemailer from 'nodemailer';
 import finalofferModel from '../models/finaloffer.model.js';
 import userModel from '../models/user.model.js';
+import workofferModel from '../models/workoffer.model.js';
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -20,9 +21,10 @@ export const newFinalOffer = async (req, res) => {
     let data = req.body;
     data.user = user;
     const userEcontrado = await userModel.findOne({ _id: user });
-    console.log(userEcontrado);
+
     data.professional = professional;
     data.workOffer = workOffer;
+
     let finalloffer = new finalofferModel(data);
     await finalloffer.save();
 
@@ -35,6 +37,10 @@ export const newFinalOffer = async (req, res) => {
       Precio: Q.${data.price}
       Sitio de Trabajo: ${data.workSite}`,
     };
+    await workofferModel.findOneAndUpdate(
+      { _id: workOffer },
+      { status: false },
+    );
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
