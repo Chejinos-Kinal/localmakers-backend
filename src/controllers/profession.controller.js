@@ -41,7 +41,7 @@ export const professionDefault = async (name, description, image) => {
 
 export const getProfessions = async (req, res) => {
   try {
-    let foundedProfessions = await Profession.find();
+    let foundedProfessions = await Profession.find({ status: true });
     return res.status(200).send({ foundedProfessions });
   } catch (err) {
     console.error(err);
@@ -53,7 +53,10 @@ export const getProfessions = async (req, res) => {
 
 export const getIdProf = async (name) => {
   try {
-    let foundedProffession = await Profession.findOne({ name: name });
+    let foundedProffession = await Profession.findOne({
+      name: name,
+      status: true,
+    });
     if (!foundedProffession)
       return console.log(
         'No se ha encontrado la profesión, no se ha podido obtener el id',
@@ -68,7 +71,7 @@ export const getIdProf = async (name) => {
 export const getProfById = async (req, res) => {
   try {
     let { idProf } = req.params;
-    let foundedProf = await Profession.findOne({ _id: idProf });
+    let foundedProf = await Profession.findOne({ _id: idProf, status: true });
     if (!foundedProf)
       return res
         .status(404)
@@ -79,5 +82,49 @@ export const getProfById = async (req, res) => {
     return res
       .status(500)
       .send({ message: 'Error al obtener la profesion por el id' });
+  }
+};
+
+export const updateProf = async (req, res) => {
+  try {
+    let { idProf } = req.params;
+    let data = req.body;
+    let updatedProf = await Profession.findOneAndUpdate({ _id: idProf }, data, {
+      new: true,
+    });
+    if (!updatedProf)
+      return res
+        .status(404)
+        .send({ message: 'Profesion no encontrada, no ha sido actualizada' });
+    return res
+      .status(200)
+      .send({ message: 'Profesion actualizada correctamente' });
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ message: 'Error al actualizar la profesion' });
+  }
+};
+
+export const deleteProf = async (req, res) => {
+  try {
+    let { idProf } = req.params;
+    let data = {
+      status: false,
+    };
+    let updatedProf = await Profession.findOneAndUpdate(
+      { _id: idProf, status: true },
+      data,
+      { new: true },
+    );
+    if (!updatedProf)
+      return res
+        .status(404)
+        .send({ message: 'Profesion no encontrada, no ha sido eliminada' });
+    return res
+      .status(200)
+      .send({ message: 'Profesion eliminada correctamente' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Error al eliminar la profesion' });
   }
 };

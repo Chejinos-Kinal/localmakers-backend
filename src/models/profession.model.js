@@ -15,6 +15,10 @@ const professionSchema = Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 export default model('Profession', professionSchema);
