@@ -90,3 +90,14 @@ export const viewAll = async (req, res) => {
     return res.status(500).send({ message: 'No se listar todas las cuentas' });
   }
 };
+
+
+export const getAccounts = async(req, res) => {
+  try {
+    let foundedAccounts = await Account.find().populate('user')
+    if(!foundedAccounts) return res.status(404).send({message: 'No se ha encontrado ninguna cuenta'})
+    return res.status(200).send({foundedAccounts})
+  } catch (err) {
+    return res.status(500).send({message: 'Error al obtener las cuentas de los usuarios'})
+  }
+}

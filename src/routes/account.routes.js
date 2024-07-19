@@ -5,6 +5,7 @@ import {
   deactivateAccount,
   ingreso,
   viewAll,
+  getAccounts
 } from '../controllers/account.controller.js';
 import { validateJwt } from '../middlewares/validate-jwt.js';
 
@@ -13,6 +14,7 @@ const api = Router();
 api.put('/ingreso', ingreso);
 api.put('/deactivateAccount', deactivateAccount);
 api.put('/AssignDebt', AssignDebt);
+api.get('/getAccounts', getAccounts)
 
 api.get('/getAccount', [validateJwt], viewAll);
 
