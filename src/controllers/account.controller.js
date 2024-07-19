@@ -21,23 +21,39 @@ export const autoAccount = async (userId) => {
 };
 
 export const ingreso = async (req, res) => {
-  // Añadir req, res para los controladores HTTP
-  const { id, monto } = req.body; // Suponiendo que vienen del cuerpo de la solicitud
+  let { id } = req.params;
+  const { monto } = req.body;
+
   try {
-    let account1 = await Account.findOne({ _id: id });
-    if (!account1) {
+    let account = await Account.findOne({ _id: id });
+    if (!account) {
       return res.status(404).send({ message: 'La cuenta no existe' });
     }
-    let montoTotal = account1.credito + monto;
+
+    let nuevaDeuda = account.deuda;
+    let nuevoCredito = account.credito;
+
+    if (monto >= account.deuda) {
+      nuevoCredito += monto - account.deuda;
+      nuevaDeuda = 0;
+    } else {
+      nuevaDeuda -= monto;
+    }
+
     let data = {
-      deuda: account1.deuda,
-      credito: montoTotal,
+      deuda: nuevaDeuda,
+      credito: nuevoCredito,
       estado: true,
     };
-    let account = await Account.findOneAndUpdate({ _id: id }, data, {
+
+    let updatedAccount = await Account.findOneAndUpdate({ _id: id }, data, {
       new: true,
     });
-    return res.send({ message: 'Depósito hecho con éxito', account });
+
+    return res.send({
+      message: 'Depósito hecho con éxito',
+      account: updatedAccount,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).send({ message: 'No se pudo agregar la cantidad' });
@@ -91,13 +107,17 @@ export const viewAll = async (req, res) => {
   }
 };
 
-
-export const getAccounts = async(req, res) => {
+export const getAccounts = async (req, res) => {
   try {
-    let foundedAccounts = await Account.find().populate('user')
-    if(!foundedAccounts) return res.status(404).send({message: 'No se ha encontrado ninguna cuenta'})
-    return res.status(200).send({foundedAccounts})
+    let foundedAccounts = await Account.find().populate('user');
+    if (!foundedAccounts)
+      return res
+        .status(404)
+        .send({ message: 'No se ha encontrado ninguna cuenta' });
+    return res.status(200).send({ foundedAccounts });
   } catch (err) {
-    return res.status(500).send({message: 'Error al obtener las cuentas de los usuarios'})
+    return res
+      .status(500)
+      .send({ message: 'Error al obtener las cuentas de los usuarios' });
   }
-}
+};
