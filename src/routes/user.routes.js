@@ -21,7 +21,7 @@ api.post('/newUser', newUser);
 api.post('/newProf', newProfessional);
 api.get('/getUserData', [validateJwt], dataUser);
 api.post('/login', login);
-api.put('/updateUser/:id', [validateJwt], update);
+api.put('/updateUser', [validateJwt], update);
 api.get('/getUsers', getUsers);
 api.delete('/deleteUser/:id', [validateJwt], deleteUser);
 api.get('/getProf', getProf);
