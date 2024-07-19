@@ -1,6 +1,7 @@
 'use strict';
 
 import reviewModel from '../models/review.model.js';
+import userModel from '../models/user.model.js';
 
 export const newReview = async (req, res) => {
   try {
@@ -86,3 +87,29 @@ export const updateReview = async(req,res) =>{
         
     }
 } */
+
+export const getReviewAdmin = async (req, res) => {
+  try {
+    const { emailProfesion } = req.params;
+    const userProfessional = await userModel.findOne({ email: emailProfesion });
+
+    if (!userProfessional) {
+      return res
+        .status(404)
+        .send({ message: 'Usuario profesional no encontrado' });
+    }
+
+    const foundReviews = await reviewModel.find({
+      userProfessional: userProfessional._id,
+    });
+
+    if (foundReviews.length === 0) {
+      return res.status(404).send({ message: 'No se encontraron reseñas' });
+    }
+
+    return res.status(200).send({ foundReviews });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: 'No se pudo listar' });
+  }
+};

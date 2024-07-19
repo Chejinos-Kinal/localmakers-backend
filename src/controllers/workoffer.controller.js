@@ -104,7 +104,10 @@ export const getWorkOffers = async (req, res) => {
 export const getWorkOffer = async (req, res) => {
   try {
     let workOfferId = req.params.id;
-    let workoffer = await WorkOffer.findOne({ _id: workOfferId });
+    let workoffer = await WorkOffer.findOne({
+      _id: workOfferId,
+      status: true,
+    }).populate('professional');
     if (!workoffer)
       return res.status(404).send({ message: 'Work offer not find' });
     return res.send({ message: 'Work offer finded', workoffer });
@@ -130,9 +133,12 @@ export const getWorkOffersByTitle = async (req, res) => {
 export const getWorkOffersByLoggedUser = async (req, res) => {
   try {
     let userIdL = req.user._id;
-    let workoffers = await WorkOffer.find({ professional: userIdL }).populate(
-      'user',
-    );
+    let workoffers = await WorkOffer.find({
+      professional: userIdL,
+      status: true,
+    })
+      .populate('user')
+      .populate('professional');
     return res.send({ message: 'Work offers found', workoffers });
   } catch (error) {
     console.error(error);
@@ -143,7 +149,7 @@ export const getWorkOffersByLoggedUser = async (req, res) => {
 export const getWorkOffersByUser = async (req, res) => {
   try {
     let userId = req.params.id;
-    let workoffers = await WorkOffer.find({ user: userId });
+    let workoffers = await WorkOffer.find({ user: userId, status: true });
     return res.send({ message: 'Work offers finded', workoffers });
   } catch (error) {
     console.error(error);
