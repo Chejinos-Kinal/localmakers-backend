@@ -31,7 +31,7 @@ export const watchTransactionsClient = async (req, res) => {
     const userIdL = req.user._id;
     const foundedTrans = await Transaction.find({
       user: userIdL,
-      $or: [{ statusProfesional: true }, { statusCliente: true }],
+      $or: [{ statusProfesional: false }, { statusCliente: false }],
     })
       .populate('finalOffer')
       .populate('professional');
