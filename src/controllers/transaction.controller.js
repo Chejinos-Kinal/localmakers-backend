@@ -57,7 +57,7 @@ export const watchTransactionsProfesional = async (req, res) => {
 
     const foundedTrans = await Transaction.find({
       professional: userIdL,
-      $or: [{ statusProfesional: true }, { statusCliente: true }],
+      $or: [{ statusProfesional: false }, { statusCliente: false }],
     })
       .populate('finalOffer')
       .populate('user');
