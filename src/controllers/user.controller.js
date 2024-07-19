@@ -219,36 +219,33 @@ export const login = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    let { id } = req.params;
+    let id = req.user.id;
     let data = req.body;
-    if (data.role) {
-      return res.status(401).send({ message: 'No puede actualizar su rol' });
+
+    if (data.password && data.passwordConfirm) {
+      if (data.password !== data.passwordConfirm) {
+        return res.status(400).send({
+          message: 'Las contraseñas no coinciden',
+        });
+      }
+      data.password = await encrypt(data.passwordConfirm);
+      delete data.passwordConfirm;
     } else {
-      if (data.password && data.passwordConfirm) {
-        if (data.password !== data.passwordConfirm) {
-          return res.status(400).send({
-            message: 'Las contraseñas no coinciden',
-          });
-        }
-        data.password = await encrypt(data.passwordConfirm);
-        delete data.passwordConfirm;
-      } else {
-        delete data.password;
-        delete data.passwordConfirm;
-      }
-      let updatedUser = await User.findOneAndUpdate({ _id: id }, data, {
-        new: true,
-      });
-      if (!updatedUser) {
-        return res
-          .status(404)
-          .send({ message: 'Usuario no encontrado, no se ha actualizado' });
-      }
-      console.log(updatedUser);
-      return res
-        .status(200)
-        .send({ message: 'Usuario actualizado', updatedUser });
+      delete data.password;
+      delete data.passwordConfirm;
     }
+    let updatedUser = await User.findOneAndUpdate({ _id: id }, data, {
+      new: true,
+    });
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .send({ message: 'Usuario no encontrado, no se ha actualizado' });
+    }
+    console.log(updatedUser);
+    return res
+      .status(200)
+      .send({ message: 'Usuario actualizado', updatedUser });
   } catch (err) {
     console.error(err);
     return res
